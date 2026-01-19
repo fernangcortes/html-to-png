@@ -7,12 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/3.3.1/dom-to-image-more.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Crossorigin anônimo para evitar bloqueios de segurança -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <style>
         body, html { height: 100%; overflow: hidden; }
+        
+        /* Área de segurança para não esconder conteúdo atrás do rodapé fixo na visualização */
         .preview-content { padding-bottom: 180px; } 
 
-        /* UI Elements */
+        /* Linha de corte */
         .cut-line {
             position: absolute; left: 0; right: 0; height: 2px;
             background-color: #ef4444; z-index: 50; pointer-events: auto;
@@ -30,13 +33,13 @@
         /* Branding */
         .glow-text { text-shadow: 0 0 8px rgba(185, 28, 28, 0.4); }
 
-        /* Tooltip */
+        /* Tooltip Customizado (AZUL) */
         .tooltip-trigger:hover::after {
             content: attr(data-tooltip);
             position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
             background: #2563eb; color: white; padding: 4px 8px; border-radius: 4px;
             font-size: 10px; white-space: nowrap; margin-bottom: 5px; z-index: 100;
-            pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 1; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .tooltip-trigger:hover::before {
             content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
@@ -119,12 +122,12 @@
     <!-- Footer -->
     <div class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-2 px-4 shrink-0 z-20 flex flex-col items-center shadow-[0_-5px_15px_rgba(0,0,0,0.02)] transition-colors">
         <div class="flex gap-4 justify-center items-center w-full mb-2">
-            <button onclick="openReadmeModal()" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 transition tooltip-trigger" data-tooltip="Ver instruções de uso">
-                <i class="fa-solid fa-circle-info"></i> Documentação
+            <button onclick="openReadmeModal()" class="text-lg hover:scale-110 transition-transform tooltip-trigger" data-tooltip="Documentação">
+                📝
             </button>
-            <div class="w-px h-3 bg-slate-200 dark:bg-slate-700"></div>
-            <button onclick="downloadApp()" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 transition tooltip-trigger" data-tooltip="Baixar este site (Limpo)">
-                <i class="fa-solid fa-floppy-disk"></i> Salvar App
+            <div class="w-px h-4 bg-slate-200 dark:bg-slate-700"></div>
+            <button onclick="downloadApp()" class="text-lg hover:scale-110 transition-transform tooltip-trigger" data-tooltip="Salvar App (HTML)">
+                💾
             </button>
         </div>
         <div class="text-center leading-none">
@@ -136,37 +139,100 @@
         </div>
     </div>
 
-    <!-- Readme Modal -->
+    <!-- Readme Modal (Documentação Completa) -->
     <div id="readme-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white dark:bg-slate-800 w-full max-w-2xl max-h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden animate-[fadeIn_0.2s_ease-out] transition-colors">
             <div class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-4 py-3 flex justify-between items-center shrink-0">
                 <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm"><i class="fa-solid fa-book text-blue-500 mr-2"></i> Documentação</h2>
                 <button onclick="closeReadmeModal()" class="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-4 font-sans">
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white">📱 Exportador HTML para PNG Mobile</h3>
-                <p>Ferramenta para converter código HTML em imagens PNG de alta fidelidade.</p>
-                <hr class="border-slate-200 dark:border-slate-700">
-                <h4 class="font-bold text-slate-700 dark:text-slate-200">✨ Funcionalidades</h4>
-                <ul class="list-disc pl-5 space-y-1">
-                    <li><strong>Motor SVG:</strong> Renderização perfeita de fontes e ícones.</li>
-                    <li><strong>Qualidade Retina:</strong> Imagens 2x mais nítidas.</li>
-                    <li><strong>Fatiamento Manual:</strong> Corte imagens longas com precisão.</li>
-                    <li><strong>ZIP Automático:</strong> Baixe fatias agrupadas.</li>
+            <div class="p-6 overflow-y-auto text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
+                <!-- README CONTEÚDO COMPLETO -->
+                <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-4">📱 HTML para PNG Mobile</h1>
+                <p class="mb-4">Uma ferramenta web <em>client-side</em> poderosa para converter tabelas, agendas e layouts HTML em imagens PNG de alta fidelidade. Otimizada para formatos mobile (400px), ideal para compartilhamento em redes sociais (WhatsApp, Instagram Stories).</p>
+
+                <div class="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 p-4 mb-6 text-sm">
+                    <p class="font-bold text-blue-900 dark:text-blue-100">Acesse a ferramenta:</p>
+                    <p class="text-blue-800 dark:text-blue-200">Basta abrir o arquivo <code>index.html</code> em qualquer navegador moderno.</p>
+                </div>
+
+                <hr class="border-slate-200 dark:border-slate-700 my-6">
+
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-4">✨ Funcionalidades Principais</h2>
+
+                <div class="space-y-5">
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-palette"></i> Motor de Renderização SVG</h3>
+                        <p class="mt-1">Utiliza a biblioteca <code>dom-to-image-more</code> para renderizar o HTML dentro de um container SVG (<code>foreignObject</code>). Garante que fontes, ícones (FontAwesome), sombras e espaçamentos sejam reproduzidos exatamente como aparecem no navegador.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-eye"></i> Qualidade Retina (2x)</h3>
+                        <p class="mt-1">O motor de exportação é configurado nativamente com <code>scale: 2</code>. Gera imagens com o dobro da densidade de pixels, garantindo nitidez cristalina em telas de alta resolução.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-scissors"></i> Fatiamento Manual</h3>
+                        <p class="mt-1">Interface visual interativa para dividir imagens verticais longas. Permite clicar na imagem para definir linhas de corte exatas, garantindo que você nunca corte uma linha de texto ou um card ao meio.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-file-zipper"></i> Empacotamento ZIP</h3>
+                        <p class="mt-1">Ao exportar cortes múltiplos, a ferramenta agrupa todas as fatias em um único arquivo <code>.zip</code> organizado, nomeado sequencialmente.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-calendar"></i> Nomenclatura Dinâmica</h3>
+                        <p class="mt-1">Gera nomes de arquivos baseados na data atual (ex: <code>jogos_do_dia-18-01-2026-FGC</code>).</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-moon"></i> Modo Escuro Automático</h3>
+                        <p class="mt-1">Suporte nativo a temas de sistema via Tailwind CSS. Adapta toda a interface para cores confortáveis, mantendo a área de preview branca para fidelidade de impressão.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Sanitização de CSS</h3>
+                        <p class="mt-1">Sistema de injeção automática de atributos de segurança. Varre links de CSS e injeta <code>crossorigin="anonymous"</code> para prevenir bloqueios de renderização.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar App (Portátil)</h3>
+                        <p class="mt-1">Permite baixar o próprio código-fonte da ferramenta como um arquivo HTML único e limpo (sem os dados do usuário), facilitando o backup ou distribuição.</p>
+                    </div>
+                </div>
+
+                <hr class="border-slate-200 dark:border-slate-700 my-6">
+
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-3">🛠️ Tecnologias Utilizadas</h2>
+                <ul class="list-disc pl-5 space-y-1 marker:text-slate-400">
+                    <li><strong>HTML5 & JavaScript ES6+:</strong> Núcleo da aplicação.</li>
+                    <li><strong>Tailwind CSS (CDN):</strong> Estilização utilitária.</li>
+                    <li><strong>dom-to-image-more:</strong> Engine de captura SVG.</li>
+                    <li><strong>JSZip:</strong> Compressão de arquivos.</li>
+                    <li><strong>FontAwesome:</strong> Ícones vetoriais.</li>
                 </ul>
-                <h4 class="font-bold text-slate-700 dark:text-slate-200">🚀 Como Usar</h4>
-                <ol class="list-decimal pl-5 space-y-1">
-                    <li>Cole seu HTML na aba <strong>Editor</strong>.</li>
-                    <li>Vá para a aba <strong>Preview</strong>.</li>
-                    <li>Escolha <strong>Baixar PNG</strong> para imagem única.</li>
-                    <li>Escolha <strong>Cortes</strong> para fatiar manualmente:
+
+                <hr class="border-slate-200 dark:border-slate-700 my-6">
+
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-3">🚀 Como Usar</h2>
+                <ol class="list-decimal pl-5 space-y-2 marker:font-bold marker:text-slate-500">
+                    <li><strong>Cole:</strong> Insira seu código HTML na aba <strong>Editor</strong>.</li>
+                    <li><strong>Visualize:</strong> Alterne para a aba <strong>Preview</strong> para ver como ficará.</li>
+                    <li><strong>Exporte:</strong>
                         <ul class="list-disc pl-5 mt-1 text-slate-500 dark:text-slate-400">
-                            <li>Toque na imagem para criar linhas de corte.</li>
-                            <li>Use o "X" para remover uma linha.</li>
-                            <li>Clique em <strong>Baixar ZIP</strong>.</li>
+                            <li><strong>Baixar PNG:</strong> Gera uma imagem única contínua.</li>
+                            <li><strong>Cortes:</strong> Entre no modo de corte, clique na imagem para marcar as divisões e baixe o ZIP.</li>
                         </ul>
                     </li>
                 </ol>
+
+                <hr class="border-slate-200 dark:border-slate-700 my-6">
+
+                <div class="text-center text-sm text-slate-500">
+                    <p>Desenvolvido para uso livre e local.</p>
+                    <p class="mt-1"><strong>Desenvolvido por FGC</strong></p>
+                </div>
             </div>
             <div class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-4 py-3 flex justify-end shrink-0">
                 <button onclick="closeReadmeModal()" class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-xs font-bold transition">Fechar</button>
