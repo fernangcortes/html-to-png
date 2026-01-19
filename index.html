@@ -45,19 +45,19 @@
         .tooltip-trigger { position: relative; }
     </style>
 </head>
-<body class="bg-slate-50 flex flex-col h-full text-slate-800 font-sans">
+<body class="bg-slate-50 dark:bg-slate-950 flex flex-col h-full text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300">
 
     <!-- Header -->
-    <div class="bg-white border-b border-slate-200 px-4 py-2 shadow-sm shrink-0 z-30 flex justify-between items-center h-14">
-        <h1 class="font-bold text-slate-700 text-sm tracking-tight">HTML para PNG <span class="text-xs font-normal text-slate-400">Mobile</span></h1>
+    <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2 shadow-sm shrink-0 z-30 flex justify-between items-center h-14 transition-colors">
+        <h1 class="font-bold text-slate-700 dark:text-slate-200 text-sm tracking-tight">HTML para PNG <span class="text-xs font-normal text-slate-400 dark:text-slate-500">Mobile</span></h1>
         
-        <div class="flex bg-slate-100 p-1 rounded-lg">
+        <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg transition-colors">
             <button onclick="switchTab('editor')" id="tab-editor" 
-                class="px-4 py-1.5 rounded-md text-xs font-bold transition-all bg-white text-blue-600 shadow-sm">
+                class="px-4 py-1.5 rounded-md text-xs font-bold transition-all bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm">
                 EDITOR
             </button>
             <button onclick="switchTab('preview')" id="tab-preview" 
-                class="px-4 py-1.5 rounded-md text-xs font-bold transition-all text-slate-500 hover:text-slate-700">
+                class="px-4 py-1.5 rounded-md text-xs font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
                 PREVIEW
             </button>
         </div>
@@ -67,16 +67,17 @@
     <div class="flex-grow relative overflow-hidden flex flex-col">
         
         <!-- Editor View -->
-        <div id="view-editor" class="absolute inset-0 flex flex-col p-2 transition-opacity duration-200 z-10 bg-slate-50">
+        <div id="view-editor" class="absolute inset-0 flex flex-col p-2 transition-opacity duration-200 z-10 bg-slate-50 dark:bg-slate-950">
             <textarea id="code-input" 
-                class="flex-grow w-full p-4 rounded-lg border border-slate-300 bg-white font-mono text-xs leading-relaxed resize-none focus:outline-none focus:border-blue-500 shadow-inner"
+                class="flex-grow w-full p-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 font-mono text-xs leading-relaxed resize-none focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 shadow-inner text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 transition-colors"
                 placeholder="Cole seu código HTML aqui..." 
                 spellcheck="false"></textarea>
         </div>
 
         <!-- Preview View -->
-        <div id="view-preview" class="absolute inset-0 flex-col bg-slate-200 hidden z-10">
+        <div id="view-preview" class="absolute inset-0 flex-col bg-slate-200 dark:bg-slate-950 hidden z-10 transition-colors">
             <div class="flex-grow overflow-y-auto overflow-x-hidden flex justify-center items-start p-4 preview-content w-full" id="scroll-container">
+                <!-- Wrapper mantido branco para representar o papel -->
                 <div id="iframe-wrapper" class="bg-white shadow-xl transition-all duration-300 origin-top shrink-0 relative" style="width: 400px;">
                     <iframe id="preview-frame" class="w-full border-none bg-white block" scrolling="no"></iframe>
                     <div id="cut-overlay" class="absolute inset-0 z-40 hidden" onclick="addCut(event)"></div>
@@ -87,22 +88,22 @@
             <!-- Action Bars -->
             <div id="action-bars-container" class="absolute bottom-4 left-0 right-0 z-50 px-4 pointer-events-none flex flex-col items-center gap-2">
                 <!-- Default Bar -->
-                <div id="bar-default" class="bg-white/95 backdrop-blur border border-slate-200 p-2 rounded-2xl shadow-xl flex gap-2 pointer-events-auto max-w-md w-full">
-                    <button onclick="startCutMode()" class="flex-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 border border-indigo-200 tooltip-trigger" data-tooltip="Modo de corte manual">
+                <div id="bar-default" class="bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-slate-200 dark:border-slate-700 p-2 rounded-2xl shadow-xl flex gap-2 pointer-events-auto max-w-md w-full transition-colors">
+                    <button onclick="startCutMode()" class="flex-1 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-3 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 border border-indigo-200 dark:border-indigo-800 tooltip-trigger" data-tooltip="Modo de corte manual">
                         <i class="fa-solid fa-scissors"></i> Cortes
                     </button>
-                    <button onclick="downloadFull()" class="flex-[2] bg-blue-600 hover:bg-blue-700 text-white px-3 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-95 tooltip-trigger" data-tooltip="Baixar imagem inteira">
+                    <button onclick="downloadFull()" class="flex-[2] bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white px-3 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-95 tooltip-trigger" data-tooltip="Baixar imagem inteira">
                         <i class="fa-solid fa-download"></i> Baixar PNG
                     </button>
                 </div>
 
                 <!-- Cutting Bar -->
-                <div id="bar-cutting" class="bg-slate-800/95 backdrop-blur border border-slate-700 p-3 rounded-2xl shadow-2xl flex flex-col gap-2 pointer-events-auto hidden max-w-md w-full">
-                    <div class="text-center text-slate-300 text-[10px] mb-1">
+                <div id="bar-cutting" class="bg-slate-800/95 dark:bg-slate-900/95 backdrop-blur border border-slate-700 dark:border-slate-600 p-3 rounded-2xl shadow-2xl flex flex-col gap-2 pointer-events-auto hidden max-w-md w-full transition-colors">
+                    <div class="text-center text-slate-300 dark:text-slate-400 text-[10px] mb-1">
                         <i class="fa-solid fa-arrow-pointer"></i> Toque na imagem para marcar cortes
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="cancelCutMode()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg font-bold text-xs transition active:scale-95">
+                        <button onclick="cancelCutMode()" class="flex-1 bg-slate-700 hover:bg-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700 text-white px-3 py-2 rounded-lg font-bold text-xs transition active:scale-95">
                             Cancelar
                         </button>
                         <button onclick="downloadManualSlices()" class="flex-[2] bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-95">
@@ -115,50 +116,50 @@
     </div>
 
     <!-- Footer -->
-    <div class="bg-white border-t border-slate-200 py-2 px-4 shrink-0 z-20 flex flex-col items-center shadow-[0_-5px_15px_rgba(0,0,0,0.02)]">
+    <div class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-2 px-4 shrink-0 z-20 flex flex-col items-center shadow-[0_-5px_15px_rgba(0,0,0,0.02)] transition-colors">
         <div class="flex gap-4 justify-center items-center w-full mb-2">
-            <button onclick="openReadmeModal()" class="text-[10px] font-bold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 transition tooltip-trigger" data-tooltip="Ver instruções de uso">
+            <button onclick="openReadmeModal()" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 transition tooltip-trigger" data-tooltip="Ver instruções de uso">
                 <i class="fa-solid fa-circle-info"></i> Documentação
             </button>
-            <div class="w-px h-3 bg-slate-200"></div>
-            <button onclick="downloadApp()" class="text-[10px] font-bold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 transition tooltip-trigger" data-tooltip="Baixar este site (Limpo)">
+            <div class="w-px h-3 bg-slate-200 dark:bg-slate-700"></div>
+            <button onclick="downloadApp()" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 transition tooltip-trigger" data-tooltip="Baixar este site (Limpo)">
                 <i class="fa-solid fa-floppy-disk"></i> Salvar App
             </button>
         </div>
         <div class="text-center leading-none">
-            <div class="text-[9px] text-slate-400 mb-0.5">
-                desenvolvido por <span class="font-black text-red-900 glow-text tracking-wide ml-0.5">FGC</span>
+            <div class="text-[9px] text-slate-400 dark:text-slate-500 mb-0.5">
+                desenvolvido por <span class="font-black text-red-900 dark:text-red-500 glow-text tracking-wide ml-0.5">FGC</span>
             </div>
-            <div class="text-[8px] text-slate-300 font-mono select-all">escrevaprofernando@gmail.com</div>
-            <div class="text-[8px] text-slate-300 font-mono mt-0.5 select-all"><span class="font-bold text-slate-400">PIX:</span> 00833238132</div>
+            <div class="text-[8px] text-slate-300 dark:text-slate-600 font-mono select-all">escrevaprofernando@gmail.com</div>
+            <div class="text-[8px] text-slate-300 dark:text-slate-600 font-mono mt-0.5 select-all"><span class="font-bold text-slate-400 dark:text-slate-500">PIX:</span> 00833238132</div>
         </div>
     </div>
 
     <!-- Readme Modal -->
     <div id="readme-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white w-full max-w-2xl max-h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden animate-[fadeIn_0.2s_ease-out]">
-            <div class="bg-slate-50 border-b border-slate-200 px-4 py-3 flex justify-between items-center shrink-0">
-                <h2 class="font-bold text-slate-700 text-sm"><i class="fa-solid fa-book text-blue-500 mr-2"></i> Documentação</h2>
-                <button onclick="closeReadmeModal()" class="text-slate-400 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 transition"><i class="fa-solid fa-xmark"></i></button>
+        <div class="bg-white dark:bg-slate-800 w-full max-w-2xl max-h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden animate-[fadeIn_0.2s_ease-out] transition-colors">
+            <div class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-4 py-3 flex justify-between items-center shrink-0">
+                <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm"><i class="fa-solid fa-book text-blue-500 mr-2"></i> Documentação</h2>
+                <button onclick="closeReadmeModal()" class="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto text-sm text-slate-600 leading-relaxed space-y-4 font-sans">
-                <h3 class="text-lg font-bold text-slate-800">📱 Exportador HTML para PNG Mobile</h3>
+            <div class="p-6 overflow-y-auto text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-4 font-sans">
+                <h3 class="text-lg font-bold text-slate-800 dark:text-white">📱 Exportador HTML para PNG Mobile</h3>
                 <p>Ferramenta para converter código HTML em imagens PNG de alta fidelidade.</p>
-                <hr class="border-slate-200">
-                <h4 class="font-bold text-slate-700">✨ Funcionalidades</h4>
+                <hr class="border-slate-200 dark:border-slate-700">
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">✨ Funcionalidades</h4>
                 <ul class="list-disc pl-5 space-y-1">
                     <li><strong>Motor SVG:</strong> Renderização perfeita de fontes e ícones.</li>
                     <li><strong>Qualidade Retina:</strong> Imagens 2x mais nítidas.</li>
                     <li><strong>Fatiamento Manual:</strong> Corte imagens longas com precisão.</li>
                     <li><strong>ZIP Automático:</strong> Baixe fatias agrupadas.</li>
                 </ul>
-                <h4 class="font-bold text-slate-700">🚀 Como Usar</h4>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">🚀 Como Usar</h4>
                 <ol class="list-decimal pl-5 space-y-1">
                     <li>Cole seu HTML na aba <strong>Editor</strong>.</li>
                     <li>Vá para a aba <strong>Preview</strong>.</li>
                     <li>Escolha <strong>Baixar PNG</strong> para imagem única.</li>
                     <li>Escolha <strong>Cortes</strong> para fatiar manualmente:
-                        <ul class="list-disc pl-5 mt-1 text-slate-500">
+                        <ul class="list-disc pl-5 mt-1 text-slate-500 dark:text-slate-400">
                             <li>Toque na imagem para criar linhas de corte.</li>
                             <li>Use o "X" para remover uma linha.</li>
                             <li>Clique em <strong>Baixar ZIP</strong>.</li>
@@ -166,17 +167,17 @@
                     </li>
                 </ol>
             </div>
-            <div class="bg-slate-50 border-t border-slate-200 px-4 py-3 flex justify-end shrink-0">
-                <button onclick="closeReadmeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-bold transition">Fechar</button>
+            <div class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-4 py-3 flex justify-end shrink-0">
+                <button onclick="closeReadmeModal()" class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-xs font-bold transition">Fechar</button>
             </div>
         </div>
     </div>
 
     <!-- Loading -->
     <div id="loading" class="fixed inset-0 bg-black/70 z-[110] flex items-center justify-center hidden backdrop-blur-sm">
-        <div class="bg-white p-6 rounded-2xl shadow-2xl flex flex-col items-center gap-4 animate-bounce-small">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-2xl flex flex-col items-center gap-4 animate-bounce-small transition-colors">
             <div class="animate-spin rounded-full h-10 w-10 border-[3px] border-blue-600 border-t-transparent"></div>
-            <span id="loading-text" class="text-sm font-bold text-slate-700">Processando...</span>
+            <span id="loading-text" class="text-sm font-bold text-slate-700 dark:text-slate-200">Processando...</span>
         </div>
     </div>
 
@@ -253,8 +254,14 @@
         }
 
         function updateTabStyle(btn, active) {
-            if(active) btn.className = "px-4 py-1.5 rounded-md text-xs font-bold transition-all bg-white text-blue-600 shadow-sm";
-            else btn.className = "px-4 py-1.5 rounded-md text-xs font-bold transition-all text-slate-500 hover:text-slate-700";
+            // Lógica para Dark Mode nos botões de aba
+            if(active) {
+                // Ativo: Fundo branco/escuro, texto azul
+                btn.className = "px-4 py-1.5 rounded-md text-xs font-bold transition-all bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm";
+            } else {
+                // Inativo: Texto cinza
+                btn.className = "px-4 py-1.5 rounded-md text-xs font-bold transition-all text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200";
+            }
         }
 
         // --- Modais ---
@@ -262,11 +269,7 @@
         function closeReadmeModal() { els.readmeModal.classList.add('hidden'); }
         
         function downloadApp() {
-            // Backup do conteúdo do usuário
             const currentCode = els.input.value;
-            
-            // LIMPEZA: Esvazia o editor antes de salvar o arquivo
-            // Isso garante que o arquivo baixado esteja "limpo" para distribuição
             els.input.innerHTML = ''; 
             els.input.value = '';
             
@@ -279,7 +282,6 @@
             link.click();
             document.body.removeChild(link);
             
-            // Restaura o conteúdo do usuário
             els.input.value = currentCode;
         }
 
